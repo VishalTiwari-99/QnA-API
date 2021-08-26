@@ -53,6 +53,7 @@ class TestSlot(models.Model):
         ('Evening', 'E'),
     )
     user = models.ForeignKey('auth.User', on_delete=models.SET_NULL, null=True)
+    date = models.DateField(auto_now=False, auto_now_add=False, default = date.today(), null=True)
     question_list = models.ManyToManyField(Question)
     time_slot = models.CharField(max_length=10, choices=Time, null=True)
     active = models.BooleanField(default=True)
