@@ -1,6 +1,6 @@
 from django.db import models
-import datetime
 from django.contrib.auth.models import User
+import datetime
 
 # Create your models here.
 class Question(models.Model):
@@ -12,7 +12,7 @@ class Question(models.Model):
     )
     
     user = models.ForeignKey('auth.User', on_delete=models.SET_NULL, null=True)
-    date = models.DateField(auto_now=False, auto_now_add=False, default = date.today(), null=True)
+    date = models.DateField(auto_now=False, auto_now_add=False, null=True)
     question_english = models.TextField(null=True)
     question_hindi = models.TextField(null=True)
 
@@ -20,7 +20,6 @@ class Question(models.Model):
     option_two = models.TextField(null=True)
     option_three = models.TextField(null=True)
     option_four = models.TextField(null=True)
-
     correct_answer = models.CharField(max_length=10, choices = ANS_CHOICES, null=True)
     fresh = models.BooleanField(default=True)
     created = models.DateField(auto_now = False, auto_now_add = True, editable=False)
@@ -45,11 +44,11 @@ class Question(models.Model):
 
 class TestSlot(models.Model):
     Time = (
-        ('Morning', 'M'),
-        ('Evening', 'E'),
+        ('M', 'Morning'),
+        ('E', 'Evening'),
     )
     user = models.ForeignKey('auth.User', on_delete=models.SET_NULL, null=True)
-    date = models.DateField(auto_now=False, auto_now_add=False, default = date.today(), null=True)
+    date = models.DateField(auto_now=False, auto_now_add=False, null=True)
     question_list = models.ManyToManyField(Question)
     time_slot = models.CharField(max_length=10, choices=Time, null=True)
     active = models.BooleanField(default=True)
@@ -65,8 +64,8 @@ class UserResponse(models.Model):
     )
     user = models.ForeignKey('auth.User', on_delete=models.CASCADE)
     test = models.ForeignKey('UserTestAttempt', on_delete=models.CASCADE)
-    question = models.ForeignKey('Question', on_delete=SET_NULL, null=True)
-    response = models.CharField(max_length=10, choices = RESPONSE_CHOICES, null=True)
+    question = models.ForeignKey('Question', on_delete=models.SET_NULL, null=True)
+    response = models.CharField(max_length=10, choices=RESPONSE_CHOICES, null=True)
 
 
 class UserTestAttempt(models.Model):
