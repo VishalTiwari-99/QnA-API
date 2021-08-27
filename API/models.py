@@ -71,6 +71,7 @@ class UserResponse(models.Model):
 class UserTestAttempt(models.Model):
     user = models.ForeignKey('auth.User', on_delete=models.SET_NULL, null=True)
     assigned_test = models.ForeignKey('TestSlot', on_delete=models.CASCADE)
+    is_attempted = models.BooleanField(default=False)
     score = models.FloatField(null=True)
 
 
