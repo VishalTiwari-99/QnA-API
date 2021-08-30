@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 import datetime
+from django.db.models.signals import post_save
 
 # Create your models here.
 class Question(models.Model):
@@ -42,7 +43,7 @@ class Question(models.Model):
 
 
 
-class TestSlot(models.Model):
+class MakeTest(models.Model):
     Time = (
         ('M', 'Morning'),
         ('E', 'Evening'),
@@ -66,12 +67,17 @@ class UserResponse(models.Model):
     test = models.ForeignKey('UserTestAttempt', on_delete=models.CASCADE)
     question = models.ForeignKey('Question', on_delete=models.SET_NULL, null=True)
     response = models.CharField(max_length=10, choices=RESPONSE_CHOICES, null=True)
+    visited = models.BooleanField(default=False)
 
 
 class UserTestAttempt(models.Model):
     user = models.ForeignKey('auth.User', on_delete=models.SET_NULL, null=True)
-    assigned_test = models.ForeignKey('TestSlot', on_delete=models.CASCADE)
+    assigned_test = models.ForeignKey('MakeTest', on_delete=models.CASCADE)
     is_attempted = models.BooleanField(default=False)
     score = models.FloatField(null=True)
 
+def create_empty_UserResponse(sender, instance, **kwargs):
+    for ques in instance.assigned_test.question_list.all():
+        UserResponse.objects.create(user=instance.user, test=instance, question=ques)
 
+post_save.connect(create_empty_UserResponse, sender=UserTestAttempt)

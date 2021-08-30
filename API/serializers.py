@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Question, TestSlot, UserResponse, UserTestAttempt
+from .models import Question, MakeTest, UserResponse, UserTestAttempt
 
 class QuestionSerializers(serializers.ModelSerializer):
     user = serializers.HiddenField(default=serializers.CurrentUserDefault())
@@ -8,14 +8,20 @@ class QuestionSerializers(serializers.ModelSerializer):
         fields = '__all__'
 
 
-class TestSlotSerializers(serializers.ModelSerializer):
+class MakeTestSerializers(serializers.ModelSerializer):
     user = serializers.HiddenField(default=serializers.CurrentUserDefault())
     class Meta:
-        model = TestSlot
+        model = MakeTest
         fields = '__all__'
 
 class UserTestAttemptSerializers(serializers.ModelSerializer):
     user = serializers.HiddenField(default=serializers.CurrentUserDefault())
     class Meta:
         model = UserTestAttempt
+        fields = '__all__'
+
+class UserResponseSerializers(serializers.ModelSerializer):
+    user = serializers.HiddenField(default=serializers.CurrentUserDefault())
+    class Meta:
+        model = UserResponse
         fields = '__all__'
